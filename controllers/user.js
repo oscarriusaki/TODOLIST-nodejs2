@@ -4,7 +4,7 @@ const { generarJWT } = require("../helpers/generarJWT");
 
 const getUsers = async (req, res)=>{
     const pg = await db;
-    const sql = 'SELECT * FROM users WHERE estado = $1';
+    const sql = 'SELECT * FROM users WHERE estado = $1 order by id_user desc';
     try{
         pg.query(sql, [ true], (err, result) => {
 
@@ -35,10 +35,32 @@ const getUsers = async (req, res)=>{
         })
     }
 }
-const getUser=(req, res)=>{
-    res.json({
-        msg: 'getUser'
-    })
+const getUser= async (req, res)=>{
+    const pg = await db;
+    const { id } = req.params;
+    const sql = "SELECT * FROM USERS WHERE id_user = $1 AND estado = $2";
+    pg.query(sql, [ id, true], (err, result) => {
+        if(err){
+            return res.status(500).json({
+                code: err.code, 
+                name: err.name, 
+                hint: err.hint,
+                detail: err.detail,
+                where: err.where,
+                file: err.file
+            })
+        }else{
+            if(result.rowCount === 1){
+                return res.status(200).json(
+                    result.rows[0]
+                )
+            }else{
+                return res.status(404).json({
+                    msg: `No hero with ${id}`
+                })
+            }
+        }
+    }) 
 }
 const postUser = async (req, res)=>{
     try{

@@ -34,10 +34,8 @@
 
     <script>
         function handleCredentialResponse(response) {
-           
            // Google Token : id_token
         //    console.log('id_token', response.credential);
-
             const body = { id_token: response.credential}
 
             fetch('http://localhost:8080/login/google',{
@@ -53,7 +51,6 @@
                     localStorage.setItem('email', resp.correo)
                 })
                 .catch(console.warn)
-
         }
         const button = document.getElementById('google_signout')
         button.onclick = () => {

@@ -9,6 +9,7 @@ class Server{
         this.path = {
             user: '/user',
             login: '/login',
+            list: '/list',
             err: '/',
         }
 
@@ -51,7 +52,8 @@ class Server{
     }
     routes(){
         this.app.use(this.path.user, require('../router/user'));
-        this.app.use(this.path.login, require('../router/login'))
+        this.app.use(this.path.login, require('../router/login'));
+        this.app.use(this.path.list, require('../router/list'));
 
         this.app.use(this.path.err, require('../router/err'));
     }
