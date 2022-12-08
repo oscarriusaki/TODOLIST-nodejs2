@@ -1,5 +1,6 @@
 const { response, json } = require("express");
 const { db } = require("../database/config");
+const path = require('path');
 
 const getList = async (req, res= response) =>{
 
@@ -58,16 +59,20 @@ const getLists = async( req, res= response) =>{
     })  
 }
 const postList = async (req, res= response) =>{
+    console.log(req.file, 'file');
+    console.log(req.body['characters'], 'body');
+    console.log(req.body['superhero'], 'body');
+    const fileDirectory = req.file.filename;
+    console.log(fileDirectory);
     const pg = await db;
-    const sql = 'INSERT INTO list (id_user, title, description, fecha, done, estado) values ($1,$2,$3,$4,$5,$6)';
+    const sql = 'INSERT INTO list (id_user, title, description, fecha, done, estado, img) values ($1,$2,$3,$4,$5,$6,$7)';
 
     const idLogueado = req.user.id_user;
-    const { id_list, ...resto } = req.body;
     const yy = new Date().getFullYear();
     const mm = new Date().getMonth() +1;
     const dd = new Date().getDate();
 
-    pg.query(sql, [idLogueado, resto.title, resto.description, (yy+"/"+mm+"/"+dd), false, true], (err, result) => {
+    pg.query(sql, [idLogueado, req.body['characters'], req.body['superhero'], (yy+"/"+mm+"/"+dd), false, true, fileDirectory], (err, result) => {
         if(err){
             return res.status(500).json({
                 code: err.code, 
@@ -147,10 +152,31 @@ const deleteList = async (req, res= response) =>{
     })
 }
 
+const getImage = async ( req, res = response) => {
+
+/*   const pg = await db;
+     
+    const type = req.file.mimetype;
+    const name = req.file.originalneme;
+    const data = fs.readFileSync(path.join(__dirname, '../images/' + req.file.filesname));
+    console.log(req.file);
+    const image = req.file;
+    console.log(image); */
+    console.log(',,,,,,,,,,,,,')
+    console.log((__dirname, '../images/' + req.file.filesname))
+    console.log(req.file.originalname);
+    console.log(req.file.filesname);
+    console.log(',,,,,,,,,,,,,')
+    console.log(req.file);
+    console.log(',,,,,,,,,,,,,')
+    console.log(__dirname)
+
+}
 module.exports = {
     getList,
     getLists,
     postList,
     putList,
     deleteList,
+    getImage
 }

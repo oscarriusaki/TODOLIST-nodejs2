@@ -71,8 +71,8 @@ const login = async ( req, res = response) => {
         });
     }catch(err){
         console.log(err);
-        return res.static(500).json({
-            msg: '' 
+        return res.static(401).json({
+            msg: 'Error talk with the administration' 
         })
     }
 }

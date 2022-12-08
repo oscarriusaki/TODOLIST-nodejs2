@@ -105,7 +105,8 @@ const postUser = async (req, res)=>{
                         }else{
                             if(result.rowCount === 1){
                                 return res.status(200).json({
-                                    msg: 'successfully registrated'
+                                    msg: 'successfully registrated',
+                                    token   
                                 })
                             }else{ 
                                 return res.status(500).json({
